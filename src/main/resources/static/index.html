@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Retiro 10&#37;</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script>
+		function solicitardxcin(){
+			var ahorro = $("#ahorroId").val();
+			var sueldo = $("#sueldoId").val();
+
+			//$("#exampleModalCenter").modal("show");
+
+			$("#dxcId").val("");
+			$("#impuestoId").val("");
+			$("#saldoId").val("");
+			
+			$.ajax({
+				type: "GET",
+				url: "http://localhost:8080/rest/msdxc/dxc?ahorro=" + ahorro + "&sueldo=" + sueldo,
+				cache: false,
+				success: function(data){
+					$("#dxcId").val(data.dxc);
+					$("#impuestoId").val(data.impuesto);
+					$("#saldoId").val(data.saldo);
+
+					//$("#exampleModalCenter").modal("hide");
+				}
+			});
+		}
+		
+		function solonumeros(e){
+			var key = window.event ? e.which : e.keyCode;
+            
+			if(key < 48 || key > 57)
+				e.preventDefault();
+		}
+	</script>
+
+	</head>
+	<body>
+		<div class="container">
+			<h2>Solicitud retiro 10&#37;</h2>
+			<form id="dxcForm">
+				<div class="form-group">
+					<label for="ahorroId" class="form-label">Ahorro</label>
+					<input type="text" name="ahorro" class="form-control" id="ahorroId" onkeypress="solonumeros(event);" required>
+				</div>
+
+				<div class="form-group">
+					<label for="ahorroId" class="form-label">Sueldo</label>
+					<input type="text" name="sueldo" class="form-control" id="sueldoId" onkeypress="solonumeros(event);" required>
+				</div>
+
+				<div class="form-group">
+				</div>
+
+				<input type="button" class="btn btn-primary" name="" id="btnReset" value="Limpiar">
+				<input type="submit" class="btn btn-primary" name="" id="btnSolicitar" value="Solicitar">
+			</form>
+			<p/>
+			<h2>Resultado solicitud</h2>
+			<form id="retiroForm">
+				<div class="form-group">
+					<label for="ahorroId" class="form-label">Retiro m&aacute;ximo</label>
+					<input type="text" name="dxc" class="form-control" id="dxcId" readonly>
+				</div>
+
+				<div class="form-group">
+					<label for="impuestoId" class="form-label">Impuesto</label>
+					<input type="text" name="impuesto" class="form-control" id="impuestoId" readonly>
+				</div>
+
+				<div class="form-group">
+					<label for="saldoId" class="form-label">Saldo</label>
+					<input type="text" name="saldo" class="form-control" id="saldoId" readonly>
+				</div>
+			</form>
+		</div>
+
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="d-flex justify-content-center">
+							<div class="spinner-border" role="status">
+								<span class="sr-only">Loading...</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script>
+		$(document).ready(function(){
+			$("#btnSolicitar").click(function(){
+				if($("#dxcForm")[0].checkValidity()) {
+					solicitardxcin();
+				}
+			});
+
+			$("#dxcForm").submit(function(e){
+				e.preventDefault();
+			});
+
+			$("#btnReset").click(function(){
+				$("#dxcForm").trigger("reset");
+				$("#retiroForm").trigger("reset");
+			});
+		});
+	</script>
+</html>

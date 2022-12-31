@@ -1,0 +1,1043 @@
+{
+	"info": {
+		"_postman_id": "2c3731c9-0ce8-4d8a-982d-d5d22797de60",
+		"name": "Dxc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "UF Valida",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Codigo de estado 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    pm.globals.set(\"UF\", jsonData.serie[0].valor);\r",
+							"    console.log(\"UF:\", pm.globals.get(\"UF\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"UF Mayor a 29000\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(pm.globals.get(\"UF\")).to.be.above(29000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 5000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://mindicador.cl/api/uf/{{today}}",
+					"protocol": "https",
+					"host": [
+						"mindicador",
+						"cl"
+					],
+					"path": [
+						"api",
+						"uf",
+						"{{today}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Iniciales",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"",
+							"pm.test(\"Codigo de estado 200\", function(){",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Tiempo de respuesta menor a 3000ms\", () =>{",
+							" pm.expect(pm.response.responseTime).to.be.below(3000);",
+							"});",
+							"",
+							"pm.test(\"Contenido Header presente\", () => {",
+							"  pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"const schema = {",
+							"  \"properties\": {",
+							"    \"alpha\": {",
+							"      \"type\": \"boolean\"",
+							"    }",
+							"  }",
+							"};",
+							"",
+							"pm.test('Validacion de esquema json correcto', function() {",
+							"  pm.response.to.have.jsonSchema(schema);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test sin parámetros",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Not failing\", function () {\r",
+							"    pm.expect(true).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Value error is Bad Request\", () => {\r",
+							"  pm.expect(pm.response.json().error)\r",
+							"    .to.eql(\"Bad Request\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 400\", () => {\r",
+							"  pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test alfanumérico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Not failing\", function () {\r",
+							"    pm.expect(true).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Value error is Bad Request\", () => {\r",
+							"  pm.expect(pm.response.json().error)\r",
+							"    .to.eql(\"Bad Request\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 400\", () => {\r",
+							"  pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro=150000A0&sueldo=46000AAA",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "150000A0"
+						},
+						{
+							"key": "sueldo",
+							"value": "46000AAA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Impuesto 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Impuesto 0 primer rango de sueldos\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.impuesto).to.eql(Math.trunc(0*150*(pm.globals.get(\"UF\"))));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"ValAhorro\", \"5000000\");\r",
+							"pm.collectionVariables.set(\"ValSueldo\", \"450000\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Impuesto 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Impuesto 0.04 segundo rango de sueldos\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.impuesto).to.eql(Math.trunc(0.04*150*(pm.globals.get(\"UF\"))));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('ValAhorro', '50000000');\r",
+							"pm.collectionVariables.set('ValSueldo', '1200000');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Impuesto 3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('ValAhorro', '50000000');\r",
+							"pm.collectionVariables.set('ValSueldo', '1700000');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Impuesto 0.08 tercer rango de sueldos\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.impuesto).to.eql(Math.trunc(0.08*150*(pm.globals.get(\"UF\"))));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Impuesto 4",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('ValAhorro', '50000000');\r",
+							"pm.collectionVariables.set('ValSueldo', '2500000');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Impuesto 0.135 tercer rango de sueldos\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.impuesto).to.eql(Math.trunc(0.135*150*(pm.globals.get(\"UF\"))));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Impuesto 5",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('ValAhorro', '50000000');\r",
+							"pm.collectionVariables.set('ValSueldo', '4200000');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Impuesto 0.23 tercer rango de sueldos\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.impuesto).to.eql(Math.trunc(0.23*150*(pm.globals.get(\"UF\"))));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Impuesto 6",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('ValAhorro', '50000000');\r",
+							"pm.collectionVariables.set('ValSueldo', '4700000');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Impuesto 0.304 tercer rango de sueldos\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    var retMax = Math.floor(pm.globals.get(\"UF\") * 150);\r",
+							"    pm.expect(responseJson.impuesto).to.eql(Math.trunc(0.304 * retMax));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Impuesto 7",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('ValAhorro', '50000000');\r",
+							"pm.collectionVariables.set('ValSueldo', '6500000');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Impuesto 0.35 tercer rango de sueldos\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    var retMax = Math.floor(pm.globals.get(\"UF\") * 150);\r",
+							"    pm.expect(responseJson.impuesto).to.eql(Math.trunc(0.35 * retMax));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sin Ahorro",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Sin Ahorro\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.dxc).to.eql(Math.trunc(0));\r",
+							"    pm.expect(responseJson.saldo).to.eql(Math.trunc(0));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"ValAhorro\", \"0\");\r",
+							"pm.collectionVariables.set(\"ValSueldo\", \"0\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retiro Maximo",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('ValAhorro', '70000000');\r",
+							"pm.collectionVariables.set('ValSueldo', '0');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Retiro Maximo\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    var dxc = Math.floor(pm.globals.get(\"UF\") * 150);\r",
+							"    pm.expect(responseJson.dxc).to.eql(dxc);\r",
+							"    pm.expect(responseJson.saldo).to.eql(pm.collectionVariables.get('ValAhorro') - dxc);    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retiro 1 Millon",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('ValAhorro', '2000000');\r",
+							"pm.collectionVariables.set('ValSueldo', '0');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Retiro 1 Millon\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.dxc).to.eql(1000000);\r",
+							"    pm.expect(responseJson.saldo).to.eql(pm.collectionVariables.get(\"ValAhorro\")-(1000000));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retiro Total",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('ValAhorro', '900000');\r",
+							"pm.collectionVariables.set('ValSueldo', '0');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Retiro Total\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.dxc).to.eql(900000);\r",
+							"    pm.expect(responseJson.saldo).to.eql(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retiro 10%",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set('ValAhorro', '15000000');\r",
+							"pm.collectionVariables.set('ValSueldo', '0');"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Retiro 10%\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.dxc).to.eql(1500000);\r",
+							"    pm.expect(responseJson.saldo).to.eql(pm.collectionVariables.get(\"ValAhorro\")-(pm.collectionVariables.get(\"ValAhorro\")*0.1));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rest/msdxc/dxc?ahorro={{ValAhorro}}&sueldo={{ValSueldo}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "{{ValAhorro}}"
+						},
+						{
+							"key": "sueldo",
+							"value": "{{ValSueldo}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const moment = require('moment');",
+					"pm.globals.set(\"today\", moment().format(\"DD-MM-YYYY\"));"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ValAhorro",
+			"value": "15000000"
+		},
+		{
+			"key": "ValSueldo",
+			"value": "1000000"
+		},
+		{
+			"key": "ValSueldo",
+			"value": "0"
+		}
+	]
+}
